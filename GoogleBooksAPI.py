@@ -33,7 +33,7 @@ class GoogleBooks:
         print('No available results -- try another search')
 
     if self.list:
-        print('SAVED BOOKS')
+        print('=== YOUR READING LIST ===')
         for i, book in enumerate(self.list):
             if 'publisher' not in book:
                 print(str(i+1) + ". " + "Title: " + book['title'] + "; " + "Author: " + book['authors'][0] + "; " + "Publisher: N/A")
@@ -44,7 +44,7 @@ class GoogleBooks:
 
     
   def save_to_list(self, searchlist):
-    booknum = input("To save a book to your list, enter its item #: ").strip()
+    booknum = input("To save a book to your Reading List, enter its item #: ").strip()
 
     if int(booknum) < 1 or int(booknum) > 5:
         print("Please re-enter a valid book item # from your recent search!")
