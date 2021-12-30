@@ -13,19 +13,9 @@ class GoogleBooks:
         response = requests.get(url, params=params)
 
         response_dict = response.json()
-        listcount = 0
 
         if response_dict['items']:
-            for i in range(len(response_dict['items'])):
-                if listcount == 5:
-                    break
-
-                if 'publisher' not in response_dict['items'][i]['volumeInfo']:
-                    print(str(i+1) + ". " + "Title: " + response_dict['items'][i]['volumeInfo']['title'] + "; " + "Author: " + response_dict['items'][i]['volumeInfo']['authors'][0] + "; " + "Publisher: N/A")
-                else:
-                    print(str(i+1) + ". " + "Title: " + response_dict['items'][i]['volumeInfo']['title'] + "; " + "Author: " + response_dict['items'][i]['volumeInfo']['authors'][0] + "; " + "Publisher: " + response_dict['items'][i]['volumeInfo']['publisher'])
-
-                listcount += 1
+            self.show_search_results(response_dict['items'])
 
             self.save_to_list(response_dict['items'])
         else:
@@ -35,6 +25,21 @@ class GoogleBooks:
             self.show_saved_list(self.list)
         
         self.search()
+
+
+    def show_search_results(self, query_result):
+        listcount = 0
+
+        for i in range(len(query_result)):
+            if listcount == 5:
+                break
+
+            if 'publisher' not in query_result[i]['volumeInfo']:
+                print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: " + query_result[i]['volumeInfo']['authors'][0] + "; " + "Publisher: N/A")
+            else:
+                print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: " + query_result[i]['volumeInfo']['authors'][0] + "; " + "Publisher: " + query_result[i]['volumeInfo']['publisher'])
+
+            listcount += 1
 
     
     def save_to_list(self, searchlist):
