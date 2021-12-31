@@ -1,12 +1,14 @@
-import json
 import requests
+import re
 
 class GoogleBooks:
     def __init__(self):
         self.list = []
+        self.listcount = 0
 
     def search(self):
         title = input("Search for a book by title: ").strip()
+        title = re.sub(r'[^\w]', ' ', title)
         query = f'intitle:{title}'
         params = {"q": query}
         url = r'https://www.googleapis.com/books/v1/volumes'
@@ -28,10 +30,10 @@ class GoogleBooks:
 
 
     def show_search_results(self, query_result):
-        listcount = 0
-
+        self.listcount = 0
+        
         for i in range(len(query_result)):
-            if listcount == 5:
+            if self.listcount == 5:
                 break
 
             if 'publisher' not in query_result[i]['volumeInfo']:
@@ -39,13 +41,13 @@ class GoogleBooks:
             else:
                 print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: " + query_result[i]['volumeInfo']['authors'][0] + "; " + "Publisher: " + query_result[i]['volumeInfo']['publisher'])
 
-            listcount += 1
+            self.listcount += 1
 
     
     def save_to_list(self, searchlist):
         booknum = input("To save a book to your Reading List, enter its item #: ").strip()
 
-        if int(booknum) < 1 or int(booknum) > 5:
+        if int(booknum) < 1 or int(booknum) > self.listcount:
             print("Please re-enter a valid book item # from your recent search!")
             self.save_to_list(searchlist)
         elif searchlist[int(booknum)-1]['volumeInfo']:
