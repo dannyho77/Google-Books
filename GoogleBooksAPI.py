@@ -1,5 +1,6 @@
 import requests
 import re
+import string
 
 class GoogleBooks:
     def __init__(self):
@@ -9,6 +10,10 @@ class GoogleBooks:
     def search(self):
         title = input("Search for a book by title: ").strip()
         title = re.sub(r'[^\w]', ' ', title)
+        if not title:
+            print("Your search input cannot be empty. Please conduct a valid search that includes alphanumeric characters.")
+            self.search()
+        
         query = f'intitle:{title}'
         params = {"q": query}
         url = r'https://www.googleapis.com/books/v1/volumes'
@@ -21,7 +26,7 @@ class GoogleBooks:
 
             self.save_to_list(response_dict['items'])
         else:
-            print('No available results -- try another search')
+            print("No available results -- try another search")
 
         if self.list:
             self.show_saved_list(self.list)
@@ -36,8 +41,12 @@ class GoogleBooks:
             if self.listcount == 5:
                 break
 
-            if 'publisher' not in query_result[i]['volumeInfo']:
+            if 'publisher' not in query_result[i]['volumeInfo'] and 'authors' not in query_result[i]['volumeInfo']:
+                print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: N/A" + "; " + "Publisher: N/A")
+            elif 'publisher' not in query_result[i]['volumeInfo']:
                 print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: " + query_result[i]['volumeInfo']['authors'][0] + "; " + "Publisher: N/A")
+            elif 'authors' not in query_result[i]['volumeInfo']:
+                print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: N/A" + "; " + "Publisher: " + query_result[i]['volumeInfo']['publisher'])
             else:
                 print(str(i+1) + ". " + "Title: " + query_result[i]['volumeInfo']['title'] + "; " + "Author: " + query_result[i]['volumeInfo']['authors'][0] + "; " + "Publisher: " + query_result[i]['volumeInfo']['publisher'])
 
