@@ -4,9 +4,9 @@
 Google-Books is a command line application that allows users to search the Google Books library for books, and to save specified books to a personal list.
 
 ## Getting Started
-- 1
-- 2
-- 3
+- install python3
+- install pip
+- py -m pip install requests
 
 ## Features
 
