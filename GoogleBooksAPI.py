@@ -8,7 +8,7 @@ class GoogleBooks:
 
     def search(self):
         title = input("Search for a book by title: ").strip()
-        title = re.sub(r'[^\w]', ' ', title)
+        # title = re.sub(r'[^\w]', ' ', title)
         if not title:
             print("Your search input cannot be empty. Please conduct a valid search that includes alphanumeric characters.")
             self.search()
@@ -20,11 +20,11 @@ class GoogleBooks:
 
         response_dict = response.json()
 
-        if response_dict['items']:
+        if 'items' not in response_dict:
+            print("No available results -- try another search")
+        elif response_dict['items']:
             self.show_search_results(response_dict['items'])
             self.search_or_save(response_dict['items'])
-        else:
-            print("No available results -- try another search")
 
         if self.list:
             self.show_saved_list()
