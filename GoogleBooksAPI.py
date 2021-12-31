@@ -55,7 +55,7 @@ class GoogleBooks:
         choice = input("If you would like to start a new search, please enter '1'. If you would like to save a book from this search result, please enter '2'. ").strip()
         if choice not in ['1', '2']:
             print("Please enter a valid input (i.e. '1' or '2').")
-            self.search_or_save()
+            self.search_or_save(query_result)
         elif choice == '1':
             self.search()
         elif choice == '2':
