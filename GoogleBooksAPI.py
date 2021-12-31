@@ -1,6 +1,5 @@
 import requests
 import re
-import string
 
 class GoogleBooks:
     def __init__(self):
@@ -23,13 +22,12 @@ class GoogleBooks:
 
         if response_dict['items']:
             self.show_search_results(response_dict['items'])
-
-            self.save_to_list(response_dict['items'])
+            self.search_or_save(response_dict['items'])
         else:
             print("No available results -- try another search")
 
         if self.list:
-            self.show_saved_list(self.list)
+            self.show_saved_list()
         
         self.search()
 
@@ -53,6 +51,16 @@ class GoogleBooks:
             self.listcount += 1
 
     
+    def search_or_save(self, query_result):
+        choice = input("If you would like to start a new search, please enter '1'. If you would like to save a book from this search result, please enter '2'. ").strip()
+        if choice not in ['1', '2']:
+            print("Please enter a valid input (i.e. '1' or '2').")
+            self.search_or_save()
+        elif choice == '1':
+            self.search()
+        elif choice == '2':
+            self.save_to_list(query_result)
+
     def save_to_list(self, searchlist):
         booknum = input("To save a book to your Reading List, enter its item #: ").strip()
 
@@ -63,11 +71,15 @@ class GoogleBooks:
             self.list.append(searchlist[int(booknum)-1]['volumeInfo'])
 
 
-    def show_saved_list(self, list):
+    def show_saved_list(self):
         print('=== YOUR READING LIST ===')
         for i, book in enumerate(self.list):
-            if 'publisher' not in book:
+            if 'publisher' not in book and 'authors' not in book:
+                print(str(i+1) + ". " + "Title: " + book['title'] + "; " + "Author: N/A" + "; " + "Publisher: N/A")
+            elif 'publisher' not in book:
                 print(str(i+1) + ". " + "Title: " + book['title'] + "; " + "Author: " + book['authors'][0] + "; " + "Publisher: N/A")
+            elif 'authors' not in book:
+                print(str(i+1) + ". " + "Title: " + book['title'] + "; " + "Author: N/A" + "; " + "Publisher: " + book['publisher'])
             else:
                 print(str(i+1) + ". " + "Title: " + book['title'] + "; " + "Author: " + book['authors'][0] + "; " + "Publisher: " + book['publisher'])
 
