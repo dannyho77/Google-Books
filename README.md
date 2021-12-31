@@ -18,4 +18,3 @@ Google-Books is a command line application that allows users to search the Googl
 - A fighter's career stats will appear at the bottom of the page simultaneously with the rendering of the aforemention fighter bio/snapshot.
 - Career Stat charts consist of four distinct charts (career: (1)bouts, (2)rounds, (3)K.O.%, (4)win%), each of which can be viewed by clicking on the respective chart type in a dropdown menu.
 - the currently selected fighter's career bar is highlighted orange to distinguish it from the other top fighters.
-![career-chart](https://media.giphy.com/media/uwfERUYKxhX3Kcqcnb/giphy.gif)  
